@@ -60,13 +60,102 @@ def ExecuteFunction(choice):
 
 def Task1function():
     global connection, cursor
-
+    cursor.execute(" SELECT papers.Id, papers.title FROM papers")
+    rows = cursor.fetchall()
+    num_rows = len(rows)
+    i = 0
+    page = 0
+    while i < num_rows and i < 5:
+        print(rows[i][0], rows[i][1])
+        i = i + 1
+    while True:
+        instruction = input("Enter 'N' to go to next page, 'P' to go to previous page, or select a paper's ID ")
+        if instruction == 'N' or instruction == 'n':
+            if i < (num_rows):
+                j = 0
+                while i < num_rows and j < 5:
+                    print(rows[i][0], rows[i][1])
+                    i = i + 1
+                page += 1
+            else:
+                print("This is the last page please try again")
+            continue
+        elif instruction == 'P' or instruction == 'p':
+            if page == 0:
+                print("This is the first page please try again")
+            else:
+                page -= 1
+                i = 5 * page
+                j = 0
+                while i < num_rows and j < 5:
+                    print(rows[i][0], rows[i][1])
+                    j += 1
+                    i = i + 1
+            continue
+        else:
+            cursor.execute(" SELECT reviews.reviewer FROM papers, reviews WHERE papers.Id = '%s' AND papers.Id = reviews.paper;" % instruction)
+            print("Reviewers:")
+            reviewers = cursor.fetchall()
+            for reviewer in reviewers:
+                print(reviewer[0])
+            break
     return
 
 
 def Task2function():
     global connection, cursor
-
+    cursor.execute(" SELECT papers.Id, papers.title FROM papers")
+    rows = cursor.fetchall()
+    num_rows = len(rows)
+    i = 0
+    page = 0
+    while i < num_rows and i < 5:
+        print(rows[i][0], rows[i][1])
+        i = i + 1
+    while True:
+        instruction = input("Enter 'N' to go to next page, 'P' to go to previous page, or select a paper's ID to review the paper ")
+        if instruction == 'N' or instruction == 'n':
+            if i < (num_rows):
+                j = 0
+                while i < num_rows and j < 5:
+                    print(rows[i][0], rows[i][1])
+                    i = i + 1
+                page += 1
+            else:
+                print("This is the last page please try again")
+            continue
+        elif instruction == 'P' or instruction == 'p':
+            if page == 0:
+                print("This is the first page please try again")
+            else:
+                page -= 1
+                i = 5 * page
+                j = 0
+                while i < num_rows and j < 5:
+                    print(rows[i][0], rows[i][1])
+                    j += 1
+                    i = i + 1
+            continue
+        else:
+            p_id = int(instruction)
+            cursor.execute(" SELECT expertise.reviewer FROM papers p1, reviews r1, expertise WHERE expertise.area = p1.area AND p1.Id = '%s' EXCEPT SELECT r2.reviewer FROM papers p2, reviews r2 WHERE p2.Id = r2.paper AND p2.Id = '%s';" % (instruction, instruction))
+            print("Potential reviewers:")
+            reviewers = cursor.fetchall()
+            p_reviewers = []
+            for reviewer in reviewers:
+                print(reviewer[0])
+                p_reviewers.append(reviewer[0])
+            reviewer = input("Select a potential reviewer to enter reviews ")
+            if reviewer not in p_reviewers:
+                print("This is not a potential reviewer, review denied")
+            else:
+                originality = input("Please enter the score for originality ")
+                importance = input("Please enter the score for importance ")
+                soundness = input("Please enter the score for soundness ")
+                overall = input("Please enter the score for overall ")
+                cursor.execute(" INSERT INTO reviews VALUES (?,?,?,?,?,?)", (p_id, reviewer, int(originality), int(importance), int(soundness), int(overall)))
+                print("Reviews added")
+            break
     return
 
 # No error checking implemented yet
