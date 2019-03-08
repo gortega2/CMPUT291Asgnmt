@@ -165,9 +165,12 @@ def Task3function():
     string = input("Please enter a range by typing the lower bound number, a - and a higher bound number (Ex: 2-4))\n")
     lower_bound = int(string[0])
     upper_bound = int(string[2])
+    
+    # changed here
     cursor.execute("SELECT COUNT(DISTINCT reviews.paper), expertise.reviewer FROM expertise LEFT JOIN reviews USING (reviewer) GROUP BY expertise.reviewer HAVING COUNT(DISTINCT reviews.paper) >= :lb AND COUNT(DISTINCT reviews.paper) <= :ub", {"lb":lower_bound, "ub":upper_bound})
     #cursor.execute("SELECT COUNT(*), r.reviewer FROM users u, reviews r WHERE r.reviewer = u.email GROUP BY r.reviewer HAVING COUNT(*) >= :lb AND COUNT(*) <= :ub",
     #          {"lb":lower_bound, "ub":upper_bound})
+    
     rows = cursor.fetchall()
     print(rows)
     return
