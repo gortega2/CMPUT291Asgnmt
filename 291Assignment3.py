@@ -199,12 +199,34 @@ def Task4function():
 
 def Task5function():
     global connection, cursor
-
+    df = pd.read_sql_query('''
+                               SELECT area,COUNT(*) AS count
+                               FROM papers
+                               GROUP BY area
+                               ORDER BY COUNT(*) DESC;''', connection)
+    
+    index = 1
+    while index < len(df.index) and (index < 5 or df.iloc[index,1] == df.iloc[index-1,1]):
+        index +=1
+    if not df.empty:
+        df.iloc[:index].plot.pie(labels=df.area,y="count")
+        plt.plot()
+        plt.show()
     return
 
 def Task6function():
     global connection, cursor
-
+    df = pd.read_sql_query('''
+                               SELECT reviewer, 
+                                   AVG(originality) AS Average_originality,
+                                   AVG(importance) as Average_importance,
+                                   AVG(soundness) as Average_soundness
+                               FROM reviews
+                               GROUP BY reviewer;''', connection)
+    if not df.empty:
+        plot = df.plot.bar(x= 'reviewer')
+        plt.plot()
+        plt.show()
     return
 
 
