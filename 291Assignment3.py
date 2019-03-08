@@ -76,6 +76,7 @@ def Task1function():
                 while i < num_rows and j < 5:
                     print(rows[i][0], rows[i][1])
                     i = i + 1
+                    j = j + 1
                 page += 1
             else:
                 print("This is the last page please try again")
@@ -120,6 +121,7 @@ def Task2function():
                 while i < num_rows and j < 5:
                     print(rows[i][0], rows[i][1])
                     i = i + 1
+                    j = j + 1
                 page += 1
             else:
                 print("This is the last page please try again")
