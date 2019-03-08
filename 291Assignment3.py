@@ -177,12 +177,20 @@ def Task4function():
     choice = int(input("Please select a task by inputting the corresponding number: \n 1. A bar plot of all individual authors \n 2. Select an individual author \n"))
 
     if choice == 1:
-        df = pd.read_sql_query("SELECT p.author, COUNT(*) FROM papers p, sessions s WHERE p.csession = s.name GROUP BY p.author", connection)
+        
+        # changed here
+        df = pd.read_sql_query("SELECT p.author, COUNT(*) FROM papers p, sessions s WHERE p.csession = s.name AND p.decision = 'A' GROUP BY p.author", connection)
+        #df = pd.read_sql_query("SELECT p.author, COUNT(*) FROM papers p, sessions s WHERE p.csession = s.name GROUP BY p.author", connection)
+        
         plot = df.plot.bar(x="author")
         plt.plot()
         plt.show()
     elif choice == 2:
-        cursor.execute("SELECT p.author FROM papers p, sessions s WHERE p.csession = s.name GROUP BY p.author")
+        
+        # changed here
+        cursor.execute("SELECT p.author FROM papers p, sessions s WHERE p.csession = s.name AND p.decision = 'A' GROUP BY p.author")
+        #cursor.execute("SELECT p.author FROM papers p, sessions s WHERE p.csession = s.name GROUP BY p.author")
+        
         rows = cursor.fetchall()
         for i in range(len(rows)):
             print(str(i) + ". " + str(rows[i][0]))
