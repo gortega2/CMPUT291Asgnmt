@@ -156,6 +156,7 @@ def Task2function():
                 soundness = input("Please enter the score for soundness ")
                 overall = input("Please enter the score for overall ")
                 cursor.execute(" INSERT INTO reviews VALUES (?,?,?,?,?,?)", (p_id, reviewer, int(originality), int(importance), int(soundness), int(overall)))
+                connection.commit()
                 print("Reviews added")
             break
     return
