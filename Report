@@ -15,7 +15,25 @@ Return to function call.
 
 
 Task 2
+This task shows all the papers in pages with each page showing five papers. User can go to different pages by entering ‘p’ to go to the previous page or entering ‘n’ to go to the next page. Once user selects a paper by its ID, the emails of all potential reviewers of that paper are shown. User should choose a potential reviewer and enter review for that paper.
 
+Implementation
+First use SQL to select all papers. Use variable page to keep track of what page it’s on. Under an infinite while loop, prompt user to enter ‘n’, ‘p’, or an ID of a paper.
+If the user enters ‘n’, go to the next page
+Else if user enters ‘p’, go to the previous page
+
+Else 
+use SQL to select all potential reviewers of that paper with the ID user enters and print out the potential reviewers.
+Prompt user to select a potential reviewer by their email
+Check if it is a potential reviewer
+If it is not a potential reviewer
+	Print out deny message
+	Exit the loop
+	Else (it is a potential reviewer)
+		Ask for input of review
+		Add review into reviews table
+	Break the loop
+  Return to function call.
 
 
 
