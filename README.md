@@ -8,4 +8,4 @@ Member 3: Gustavo Ortega - gortega
 
 Collaboration:
 
-Sources:
+Sources: http://www.sqlitetutorial.net/sqlite-limit/ 
