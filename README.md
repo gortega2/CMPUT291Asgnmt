@@ -2,7 +2,7 @@
 
 Member 1: Li Shang - lshang
 
-Member 2: William Wei
+Member 2: William Wei - wswei
 
 Member 3: Gustavo Ortega - gortega
 
