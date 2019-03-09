@@ -196,19 +196,22 @@ def Task4function():
 
 def Task5function():
     global connection, cursor
-    # select area's name and count the number of papers under that area
+    # select area's name and count of the number of papers under that area
     df = pd.read_sql_query('''
-                               SELECT areas.name AS area, COUNT(papers.id) AS count
-                               FROM areas LEFT JOIN papers ON (areas.name = papers.area)
-                               GROUP BY areas.name
-                               ORDER BY COUNT(papers.id) DESC;''', connection)
+                               SELECT area, COUNT(*) AS count
+                               FROM papers
+                               GROUP BY area
+                               HAVING COUNT(*) >= (
+                                   SELECT COUNT(*)
+                                   FROM papers
+                                   GROUP BY area
+                                   ORDER BY COUNT(*) DESC 
+                                   LIMIT 1,1);''', conn)
     
-    index = 1
-    while index < len(df.index) and (index < 5 or df.iloc[index,1] == df.iloc[index-1,1]):
-        index +=1
+    
     # plot the graph
     if not df.empty:
-        df.iloc[:index].plot.pie(labels=df.area,y="count")
+        plot = df.plot.pie(labels=df.area,y="count")
         plt.plot()
         plt.show()
     return
@@ -221,6 +224,7 @@ def Task6function():
                                    AVG(originality) AS Average_originality,
                                    AVG(importance) AS Average_importance,
                                    AVG(soundness) AS Average_soundness
+                                   AVG(overall) AS Average_overall
                                FROM reviews
                                GROUP BY reviewer;''', connection)
     # plot the graph
