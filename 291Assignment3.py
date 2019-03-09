@@ -140,7 +140,7 @@ def Task2function():
             continue
         else:
             p_id = int(instruction)
-            cursor.execute(" SELECT expertise.reviewer FROM papers p1, reviews r1, expertise WHERE expertise.area = p1.area AND p1.Id = '%s' EXCEPT SELECT r2.reviewer FROM papers p2, reviews r2 WHERE p2.Id = r2.paper AND p2.Id = '%s' EXCEPT select p3.author FROM papers p3 WHERE p3.Id = '%s';" % (instruction, instruction, instruction))
+            cursor.execute(" SELECT expertise.reviewer FROM papers p1, expertise WHERE expertise.area = p1.area AND p1.Id = '%s' AND p1.author <> expertise.reviewer EXCEPT SELECT r1.reviewer FROM papers p2, reviews r1 WHERE p2.Id = r1.paper AND p2.Id = '%s' ;" % (instruction, instruction))
             print("Potential reviewers:")
             reviewers = cursor.fetchall()
             p_reviewers = []
