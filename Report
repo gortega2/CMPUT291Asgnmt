@@ -4,8 +4,14 @@ Once the user selects a task, the task is performed. After the task is done, use
 
 B. Design
 Task 1
+This task shows all the papers in pages with each page showing five papers. User can go to different pages by entering ‘p’ to go to the previous page or entering ‘n’ to go to the next page. Once user selects a paper by its ID, the emails of all reviewers of that paper are shown.
 
-
+Implementation
+First use SQL to select all papers. Use variable page to keep track of what page it’s on. Under an infinite while loop, prompt user to enter ‘n’, ‘p’, or an ID of a paper.
+If the user enters ‘n’, go to the next page
+Else if user enters ‘p’, go to the previous page
+Else use SQL to select all the reviewers of that paper with the ID user enters and print out the reviewers. Break the while loop.
+Return to function call.
 
 
 Task 2
