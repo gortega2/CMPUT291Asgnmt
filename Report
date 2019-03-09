@@ -1,0 +1,55 @@
+A. Overview
+After open the application, a list of tasks is given with assigned numbers from 1 to 6. User is prompted to enter a number between 1 to 6 to perform corresponding task or enter e/exit to exit the program.
+Once the user selects a task, the task is performed. After the task is done, user is prompted to select a task again or leave the program.
+
+B. Design
+Task 1
+
+
+
+
+Task 2
+
+
+
+
+
+Task 3
+
+
+
+
+
+Task 4
+
+
+
+
+
+Task 5
+
+
+
+
+
+Task 6
+
+
+
+
+C. Testing Strategy
+
+
+
+D. Group Work Strategy
+
+Group Work Break-Down
+
+We divided the tasks into three parts. Each person takes care of one part. Li Shang is responsible for task 1 and task 2. Gustavo Ortega is responsible for task 3 and task 4. William Wei is responsible for task 5 and task 6. Everyone contributes to this report file.
+
+Time Spent and Progress
+#simply write down the time spent on working on this assignment and when you finished what
+
+
+Method of Communication
+We use GitHub to keep track of our work progress. We put our source code and other files onto GitHub so everyone can edit them. We use chat application and emails to communicate.
