@@ -1,9 +1,10 @@
-﻿A. Overview
+A. Overview
 After open the application, a list of tasks is given with assigned numbers from 1 to 6. User is prompted to enter a number between 1 to 6 to perform corresponding task or enter e/exit to exit the program.
 Once the user selects a task, the task is performed. After the task is done, user is prompted to select a task again or leave the program.
 
 B. Design
 Task 1
+Task1function()
 This task shows all the papers in pages with each page showing five papers. User can go to different pages by entering ‘p’ to go to the previous page or entering ‘n’ to go to the next page. Once user selects a paper by its ID, the emails of all reviewers of that paper are shown.
 
 Implementation
@@ -15,6 +16,7 @@ Return to function call.
 
 
 Task 2
+Task2function()
 This task shows all the papers in pages with each page showing five papers. User can go to different pages by entering ‘p’ to go to the previous page or entering ‘n’ to go to the next page. Once user selects a paper by its ID, the emails of all potential reviewers of that paper are shown. User should choose a potential reviewer and enter review for that paper.
 
 Implementation
@@ -39,6 +41,7 @@ If it is not a potential reviewer
 
 
 Task 3
+Task3function()
 This task prompts the user to input a number range, and using that number range the task shows all of the reviewers whose number of reviews fall into that range (bounds included).  
 
 Implementation
@@ -47,6 +50,7 @@ Use python input() function to prompt the user to enter a number range. Convert 
 
 
 Task 4
+Task4function()
 This task allows the user to choose two options by typing in the corresponding number for the task:
 1. Shows a bar plot of all individual authors and how many sessions they participate in
 2. Displays individual authors and allows the user to select one by typing in the corresponding number
@@ -64,21 +68,36 @@ After either of the two tasks has been executed, exit the function.
 
 
 Task 5
+Task5function()
+This task uses a pie chart to display the top 5 most popular areas by number of papers. 
+In the case of ties, more than 5 areas may be displayed
+If there are less than 5 areas with papers, all areas with papers will be displayed
 
-
+Implementation
+Use pandas read_sql_query to get a DataFrame of all areas with number of papers greater than or equal to the 5th largest number of papers
+Plot a pie chart using pandas
 
 
 
 Task 6
+Task6function()
+This task uses a grouped bar chart to display the average review score of each reviewer grouped by category
 
+Implementation
+Use pandas read_sql_query to get a DataFrame of all reviewers with reviews and their average category scores
+Plot a grouped bar chart using pandas
 
-
+main()
+Connects to inputed database
+Executes corresponding task functions based on input - TaskXfunction for input X
+Ends program for input of 'e' or 'exit'
 
 C. Testing Strategy
 To test whether task 1 and 2 work, increased the number of papers to 12.
 
-To test whether Task 3 and 4 work, used the same database provided in assignment 2 to use sql queries on. Preformed SQL queries using DBBrowser for SQlite and compared results to the program to check if they matched. 
+To test whether Task 3, 4, and 6 work, used the same database provided in assignment 2 to use sql queries on. Preformed SQL queries using DBBrowser for SQlite and compared results to the program to check if they matched. 
 
+To test whether task 5 worked, added additional areas and papers to ensure proper output with more than 5 areas and with ties.
 
 D. Group Work Strategy
 
@@ -86,12 +105,15 @@ Group Work Break-Down
 
 We divided the tasks into three parts. Each person takes care of one part. Li Shang is responsible for task 1 and task 2. Gustavo Ortega is responsible for task 3 and task 4. William Wei is responsible for task 5 and task 6. Everyone contributes to this report file.
 
-Time Spent and Progress
+D. Time Spent and Progress
 #simply write down the time spent on working on this assignment and when you finished what
 Li Shang spent approximately 4 hours on task 1 and task 2. Started on Wednesday March 6 and finished on Thursday March 7.
 
 Gustavo Ortega spent around 3 hours on task 3, task 4, and on the skeletal framework of the code. Started on Monday March 4 and finished on Thursday March 7.
 
+William Wei spend around 4 hours on tasks 5 and 6. Started on Tuesday March 5 and finished on Thursday March 7
+
+The design document was worked on by all three members and finished on Saturday March 9
 
 Method of Communication
 We use GitHub to keep track of our work progress. We put our source code and other files onto GitHub so everyone can edit them. We use chat application (discord) and emails to communicate (gmail).
