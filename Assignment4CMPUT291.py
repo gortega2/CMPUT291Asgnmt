@@ -36,13 +36,12 @@ def Task3function():
 def Task4function():
     global connection, cursor
 
-    start_year = input('Enter the starting year (YYYY): ')
-    end_year = input('Enter the end year (YYYY): ')
-    N = input('Enter the number of neighborhoods: ')
+    m = folium.Map(location=[53.5444, -113.323], zoom_start=11) #Instantiates the map 
+    start_year = int(input('Enter the starting year (YYYY): '))
+    end_year = int(input('Enter the end year (YYYY): '))
+    N = int(input('Enter the number of neighborhoods: '))
 
-    '''
-    SQL QUERY:
-    SELECT *, (Column2.pop/Column1.inc_count) AS Ratio
+    cursor.execute('''SELECT Column1.Neighbourhood_Name, Column2.pop, Column1.inc_count, (Column1.inc_count/ CAST(Column2.pop AS FLOAT)) AS Ratio, Column3.Latitude, Column3.Longitude
 FROM (
 SELECT ci.Neighbourhood_Name, SUM(Incidents_Count) as inc_count
 FROM crime_incidents ci
@@ -51,12 +50,49 @@ AND ci.YEAR <= 2009
 GROUP BY ci.Neighbourhood_Name
 ORDER BY inc_count DESC) as Column1,
 
-(SELECT Neighbourhood_Name, SUM(CANADIAN_CITIZEN + NON_CANADIAN_CITIZEN) as pop
+(SELECT Neighbourhood_Name, SUM(CANADIAN_CITIZEN + NON_CANADIAN_CITIZEN + NO_RESPONSE) as pop
 FROM population
-GROUP BY Neighbourhood_Name) as Column2
-where Column1.Neighbourhood_Name = Column2.Neighbourhood_Name;
+GROUP BY Neighbourhood_Name) as Column2,
+
+(SELECT Neighbourhood_Name,Latitude, Longitude
+FROM coordinates c
+WHERE Latitude > 0
+OR Longitude > 0
+GROUP BY Neighbourhood_Name) as Column3
+where Column1.Neighbourhood_Name = Column2.Neighbourhood_Name
+AND Column1.Neighbourhood_Name = Column3.Neighbourhood_Name
+and Column2.pop > 0
+ORDER BY Ratio desc;''')
+    rows = cursor.fetchall()
+    
+
+    '''
+    SQL QUERY:
+   SELECT Column1.Neighbourhood_Name, Column2.pop, Column1.inc_count, (Column1.inc_count/ CAST(Column2.pop AS FLOAT)) AS Ratio, Column3.Latitude, Column3.Longitude
+FROM (
+SELECT ci.Neighbourhood_Name, SUM(Incidents_Count) as inc_count
+FROM crime_incidents ci
+WHERE ci.YEAR >= 2009
+AND ci.YEAR <= 2009
+GROUP BY ci.Neighbourhood_Name
+ORDER BY inc_count DESC) as Column1,
+
+(SELECT Neighbourhood_Name, SUM(CANADIAN_CITIZEN + NON_CANADIAN_CITIZEN + NO_RESPONSE) as pop
+FROM population
+GROUP BY Neighbourhood_Name) as Column2,
+
+(SELECT Neighbourhood_Name,Latitude, Longitude
+FROM coordinates c
+WHERE Latitude > 0
+OR Longitude > 0
+GROUP BY Neighbourhood_Name) as Column3
+where Column1.Neighbourhood_Name = Column2.Neighbourhood_Name
+AND Column1.Neighbourhood_Name = Column3.Neighbourhood_Name
+and Column2.pop > 0
+ORDER BY Ratio desc;
 
 '''
+
     
 
     
