@@ -36,6 +36,31 @@ def Task3function():
 def Task4function():
     global connection, cursor
 
+    start_year = input('Enter the starting year (YYYY): ')
+    end_year = input('Enter the end year (YYYY): ')
+    N = input('Enter the number of neighborhoods: ')
+
+    '''
+    SQL QUERY:
+    SELECT *, (Column2.pop/Column1.inc_count) AS Ratio
+FROM (
+SELECT ci.Neighbourhood_Name, SUM(Incidents_Count) as inc_count
+FROM crime_incidents ci
+WHERE ci.YEAR >= 2009
+AND ci.YEAR <= 2009
+GROUP BY ci.Neighbourhood_Name
+ORDER BY inc_count DESC) as Column1,
+
+(SELECT Neighbourhood_Name, SUM(CANADIAN_CITIZEN + NON_CANADIAN_CITIZEN) as pop
+FROM population
+GROUP BY Neighbourhood_Name) as Column2
+where Column1.Neighbourhood_Name = Column2.Neighbourhood_Name;
+
+'''
+    
+
+    
+
     return
 
 def SelectFunction():
