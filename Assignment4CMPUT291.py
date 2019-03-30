@@ -45,8 +45,8 @@ def Task4function():
 FROM (
 SELECT ci.Neighbourhood_Name, SUM(Incidents_Count) as inc_count
 FROM crime_incidents ci
-WHERE ci.YEAR >= 2009
-AND ci.YEAR <= 2009
+WHERE ci.YEAR >= :sy
+AND ci.YEAR <= :ey
 GROUP BY ci.Neighbourhood_Name
 ORDER BY inc_count DESC) as Column1,
 
@@ -62,8 +62,15 @@ GROUP BY Neighbourhood_Name) as Column3
 where Column1.Neighbourhood_Name = Column2.Neighbourhood_Name
 AND Column1.Neighbourhood_Name = Column3.Neighbourhood_Name
 and Column2.pop > 0
-ORDER BY Ratio desc;''')
+ORDER BY Ratio desc;''', {"sy":start_year, "ey":end_year})
     rows = cursor.fetchall()
+    neighbourhoods = rows[0:N]
+    for x in neighbourhoods:
+        print(x)
+        folium.Marker(location=[x[4], x[5]], popup=x[0]).add_to(m)
+        m.save(x[0] + "_marker.html")
+    m
+    
     
 
     '''
