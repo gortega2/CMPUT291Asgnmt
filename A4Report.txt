@@ -1,0 +1,59 @@
+A.	Overview
+When the application is first opened, the user is prompted to enter the database file. A function_count array is initialized to keep track the number of times a function is executed. Then the user is prompted to enter a number between 1-4 to perform the corresponding task. Once the task is preformed, the program exits the function and prompts the user again. This loops until the user enters ‘e’ or ‘exit’ to stop the program.
+
+B.	Design
+Task 1
+Task1function()
+Task1function()
+This task prompts the user to enter a range for starting year and end year, and to enter a crime type. The function creates a bar plot of the month-wise total count of the given crime type and saves the plot.
+Implementation
+First use input() to prompt the user to enter start year, end year, and crime type.
+Use SQL to find the total count of the given crime type for each month.
+Use matplotlib to plot the bar plot and save it.
+
+Task 2 
+Task2function()
+This task prompts the user to enter a number N. Then the function creates a map with circles and the population count for the N-most populous neighbourhood and N-least populous neighbourhood (red circles for most and blue circles for least)
+Implementation
+First use input() to prompt the user to enter a number N.
+Use SQL to find all the neighbourhood, their coordinates and total population where population and coordinates are not 0.
+Use folium to create a map.
+Use a while-loop to create a circle to the map for the N-most populous neighbourhood.
+Use df.sort_values to sort the population from least to most.
+Use a while-loop to create a circle to the map for the N-least populous neighbour.
+Save the map.
+
+Task 3
+Task3function()
+This tasks prompts the user to enter a range for the starting year, end year, crime type and number of neighbourhoods. It then creates and saves an html map page with markers of the top-N neighbourhoods with their crime count where the given crime type occurred most within the given range.
+
+Implementation
+First, the map is instantiated. Then, user input is retrieved for the years, crime type, and number of neighbourhoods. These values are used in an SQL query that returns the top-N neighbourhoods with their crime count where the given crime type occurred most within the given range (accounting for ties). Then for each row in the returned data, a circle is created in the folium map. Lastly, This map is saved.
+
+
+Task 4
+Task4 function()
+This tasks prompts the user to enter a range for the starting year, end year, and then asks for the number of N neighbourhoods. It then creates an html map page with markers of the top-N neighbourhoods with the highest crime to population ratio.
+
+Implementation:
+First, the map is instantiated. Then, use the python input() function to retrieve the starting year, end year, and N number of neighbourhoods and convert it to an integer. Then, use the sqlite3 component to execute an SQL query that fetches neighbourhoods and the number of crime incidents that occurred within the range specified. It is sorted with the highest ratio descending. Then, depending of the N specified, neighbourhoods = rows[0:N] will retrieve the top-N neighbourhoods. Then, a for loop is used for every x in neighbourhood. For every x, execute an SQL query to fetch the most frequent crime in that neighbourhood, then use the folium component to create a marker on the map. Finally, after the for loop is finished, save the map and exit the function.
+Main function
+main()
+This function loads the database from the inputted name and creates an array to store the run counts of each function. It then prompts users to choose a task and executes the respective function while also updating the run count. When the user chooses to exit, the connection is closed and the program ends.
+C.	Testing Strategy 
+To test for Task 1, used the sample database and let both the start year and end year be 2018 (since there is no crime incidents in December 2018 recorded) to test whether the month 12 would in the plot. Then used other years to test if it works for normal situations.
+To test for Task 2, changed the database so the two most populous neighbourhood have the same population. Called the function to see if created the correct number of circles. Then changed the database so the two least populous neighbourhood have the same population and see if the function created the correct number of circles.
+Task 3 was tested using the sample database provided on eclass. The code was tested with various values for years and number of areas. The results of these were compared to the results from DBBrowser. A bug was encountered when N exceeded the number of neighbourhoods and was fixed.
+To test whether Task 4 works, used the sample database provided to test the SQL queries using DBBrowser for SQlite and compared the results with the program to check if they matched. Then we checked the folium map created to see if the markers matched with the results. 
+
+D.	Group-Work Strategy 
+Split Tasks 2, 3, & 4 among the group members as they were the harder tasks. Li Shang is responsible for Task 2, William Wei is responsible for task 3, Gustavo Ortega is responsible for task 4. Everyone contributed to the report file. Li Shang finished Task 1.
+E.	Time Spent and Progress
+Li Shang spent approximately 4 hours on task 2 and 2 hours on task 1. Started on Wednesday March 27 and finished on Friday March 29.
+
+Gustavo Ortega spent around 4-5 hours on Task 4 and the skeletal framework of the code. Started on Wednesday March 27th and finished on Friday March 29th. 
+William spent around 3 hours on Task 3. Started Wednesday March 27th, finished Thursday Math 28th 
+The design document was worked on by all three members and finished on Saturday March 30th. 
+Method of Communication:
+Github was used to keep track of progress while Discord was used for discussion between group members. 
+
