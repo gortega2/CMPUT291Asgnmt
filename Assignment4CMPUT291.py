@@ -87,9 +87,42 @@ def Task2function(array):
     m.save("Q2-" + str(array[1]) + ".html")
     return
 
-def Task3function():
+def Task3function(array):
     global connection, cursor
+    m = folium.Map(location=[53.5444,-113.323], zoom_start=11)
+    start = input('Enter start year (YYYY):')
+    end = input('Enter end year (YYYY):')
+    crime = input('Enter crime type:')
+    num = input('Enter number of neighbourhoods:')
 
+    cursor.execute('''
+                   SELECT Neighbourhood_Name, SUM(Incidents_Count), Latitude, Longitude
+                   FROM coordinates LEFT JOIN crime_incidents USING(Neighbourhood_Name)
+                   WHERE Year >= :start AND Year <= :end AND Crime_Type == :crime AND Longitude != 0 AND Latitude != 0 
+                   GROUP BY Neighbourhood_Name, Latitude, Longitude
+                   HAVING SUM(Incidents_Count) >= (
+                       SELECT MIN(sm) 
+                       FROM (
+                           SELECT SUM(Incidents_Count) AS sm
+                           FROM coordinates LEFT JOIN crime_incidents USING(Neighbourhood_Name)
+                           WHERE Year >= :start AND Year <= :end AND Crime_Type == :crime AND Longitude != 0 AND Latitude != 0
+                           GROUP BY Neighbourhood_Name
+                           ORDER BY SUM(Incidents_Count) DESC
+                           LIMIT :num));
+                           ''',
+                           {'start': start, 'end': end, 'crime': crime, 'num': num})
+                   
+    rows = cursor.fetchall()
+    for row in rows:
+        folium.Circle(location=[float(row[2]), float(row[3])], 
+                  popup= '%s <br> %d' % (row[0], int(row[1])),
+                  radius= int(row[1]),
+                  color= 'crimson',
+                  fill= True,
+                  fill_color= 'crimson'
+                  ).add_to(m)
+    m.save('Q3-%d.html' % array[2])
+    
     return
 
 def Task4function(array):
