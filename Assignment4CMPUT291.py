@@ -149,31 +149,38 @@ GROUP BY Neighbourhood_Name) as Column2,
 
 (SELECT Neighbourhood_Name,Latitude, Longitude
 FROM coordinates c
-WHERE Latitude > 0
-OR Longitude > 0
+WHERE Latitude <> 0
+OR Longitude <> 0
 GROUP BY Neighbourhood_Name) as Column3
 where Column1.Neighbourhood_Name = Column2.Neighbourhood_Name
 AND Column1.Neighbourhood_Name = Column3.Neighbourhood_Name
 and Column2.pop > 0
 ORDER BY Ratio desc;''', {"sy":start_year, "ey":end_year})
     rows = cursor.fetchall()
-    neighbourhoods = rows[0:N]
-    # This for loop will add a marker to the map for every x in neighbourhood
-    for x in neighbourhoods:
-        print(x)
+    i = 0
+    while i < len(rows) and (i < N or rows[i][3] == rows[i-1][3]):
+    # This while loop will add a circle to the map for top N in neighbourhood
+
         # Executes the SQL Query to get the most frequent crime type
         cursor.execute('''SELECT col1.Crime_type, MAX(col1.ic)
-FROM (
-SELECT Neighbourhood_Name, Crime_type, SUM(Incidents_Count) AS ic
-FROM crime_incidents
-WHERE Neighbourhood_Name = :nn
-AND YEAR >= :sy
-AND YEAR <= :ey
-GROUP BY Crime_type
-ORDER BY ic DESC ) AS col1''', {"nn":x[0], "sy":start_year, "ey":end_year})
+                        FROM (
+                        SELECT Neighbourhood_Name, Crime_type, SUM(Incidents_Count) AS ic
+                        FROM crime_incidents
+                        WHERE Neighbourhood_Name = :nn
+                        AND YEAR >= :sy
+                        AND YEAR <= :ey
+                        GROUP BY Crime_type
+                        ORDER BY ic DESC ) AS col1''', {"nn":rows[i][0], "sy":start_year, "ey":end_year})
         crime_type = cursor.fetchone()
-        #Adds the marker to the map
-        folium.Marker(location=[x[4], x[5]], popup=(x[0] + "\n" + crime_type[0] + "\n" + str(x[3]))).add_to(m)
+        #Adds the circle to the map
+        folium.Circle(
+            location = [rows[i][4], rows[i][5]],
+            popup = rows[i][0] + '\n' + crime_type[0] + '\n' + str(rows[i][3]),
+            radius = rows[i][3] * 5000.0,
+            color = 'crimson',
+            fill = True,
+            fill_color = 'crimson').add_to(m)
+        i+=1
     #Saves the map     
     m.save("Q4-" + str(array[3]) + ".html")    
 
