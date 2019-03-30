@@ -166,9 +166,8 @@ def ExecuteFunction(choice, array):
         Task3function(q3c)
         array[2] += 1
     elif choice == 4:
-        array[3] += 1
         Task4function(array)
-
+        array[3] += 1
     return
 
 def main():
