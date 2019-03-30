@@ -157,10 +157,10 @@ def ExecuteFunction(choice, array):
 
     # Updates the function count each time the corresponding function is executed
     if choice == 1:
-        Task1function()
+        Task1function(array)
         array[0]+= 1
     elif choice == 2:
-        Task2function()
+        Task2function(array)
         array[1] += 1
     elif choice == 3:
         Task3function(q3c)
