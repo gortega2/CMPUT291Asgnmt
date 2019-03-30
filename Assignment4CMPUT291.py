@@ -23,9 +23,41 @@ def Task1function():
 
     return
 
-def Task2function():
+def Task2function(array):
     global connection, cursor
-
+    N = input("Enter number of locations:")
+    df = pd.read_sql_query('''
+                              SELECT Neighbourhood_Name, Latitude, Longitude, CANADIAN_CITIZEN + NON_CANADIAN_CITIZEN + NO_RESPONSE AS total_population
+                              FROM population LEFT JOIN coordinates USING (neighbourhood_name)
+                              WHERE total_population <> 0 AND latitude <> 0 AND longitude <> 0
+                              ORDER BY total_population DESC;
+                              ''', connection)
+    m = folium.Map(location = [53.5444, -113.323], zoom_start = 11)
+    
+    i = 0
+    while i < len(df) and (i < int(N) or df.iloc[i]["total_population"] == df.iloc[i-1]["total_population"]):
+        folium.Circle(
+            location = [df.iloc[i]['Latitude'], df.iloc[i]['Longitude']],
+            popup = df.iloc[i]['Neighbourhood_Name'] + '\n' + str(df.iloc[i]['total_population']),
+            radius = df.iloc[i]['total_population'] * 0.2,
+            color = 'crimson',
+            fill = True,
+            fill_color = 'crimson').add_to(m)
+        i+=1
+        
+    df = df.sort_values(by = ['total_population'])
+    
+    i = 0
+    while i < len(df) and (i < int(N) or df.iloc[i]["total_population"] == df.iloc[i-1]["total_population"]):
+        folium.Circle(
+            location = [df.iloc[i]['Latitude'], df.iloc[i]['Longitude']],
+            popup = df.iloc[i]['Neighbourhood_Name'] + '\n' + str(df.iloc[i]['total_population']),
+            radius = df.iloc[i]['total_population'] * 1.0,
+            color = 'blue',
+            fill = True,
+            fill_color = 'blue').add_to(m)
+        i+=1    
+    m.save("Q2-" + str(array[1]) + ".html")
     return
 
 def Task3function():
