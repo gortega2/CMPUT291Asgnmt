@@ -18,9 +18,36 @@ def connect(path):
     return
 
 
-def Task1function():
+def Task1function(array):
     global connection, cursor
-
+    
+    start_year = input("Enter start year (YYYY): ")
+    end_year = input("Enter end year (YYYY): ")
+    crime = input("Enter crime type: ")
+    df = pd.read_sql_query('''
+                          SELECT M.MONTH, total_sum
+                          FROM ( SELECT 1 AS MONTH UNION
+                          SELECT 2 AS MONTH UNION
+                          SELECT 3 AS MONTH UNION
+                          SELECT 4 AS MONTH UNION
+                          SELECT 5 AS MONTH UNION
+                          SELECT 6 AS MONTH UNION
+                          SELECT 7 AS MONTH UNION
+                          SELECT 8 AS MONTH UNION
+                          SELECT 9 AS MONTH UNION
+                          SELECT 10 AS MONTH UNION
+                          SELECT 11 AS MONTH UNION
+                          SELECT 12 AS MONTH) M
+                          LEFT JOIN 
+                          (SELECT crime_incidents.MONTH, SUM(Incidents_Count) AS total_sum
+                          FROM crime_incidents 
+                          WHERE crime_type = ? AND year >= ? AND year <= ?
+                          GROUP BY MONTH) C 
+                          USING (MONTH) ''', connection, params = (crime, start_year, end_year,))
+    # plot the graph
+    if not df.empty:
+        plot = df.plot.bar(x= 'MONTH')
+        plt.savefig('Q1-' + str(array[0]) +'.png')
     return
 
 def Task2function(array):
