@@ -177,7 +177,7 @@ def main():
     path = input("Enter database name: ")
     connect(path)
     # Initializes the count arrray
-    count_array = [0,0,0,0]
+    count_array = [1,1,1,1]
     while True:
         choice = SelectFunction()
         if choice == 'e' or choice == 'exit':
